@@ -18,6 +18,7 @@
       "parentId": "wrk_api_django_reference",
       "name": "Base Environment",
       "data": {
+        "host": "http://localhost:8000",
         "base_url": "http://localhost:8000/api/v1/users",
         "email": "john@example.com",
         "password": "Str0ng-Pass!23",
@@ -27,7 +28,7 @@
         "token": ""
       },
       "dataPropertyOrder": {
-        "&": ["base_url", "email", "password", "access_token", "refresh_token", "uid", "token"]
+        "&": ["host", "base_url", "email", "password", "access_token", "refresh_token", "uid", "token"]
       },
       "metaSortKey": 1
     },
@@ -204,6 +205,45 @@
       ],
       "authentication": {},
       "metaSortKey": -200
+    },
+    {
+      "_id": "fld_observability",
+      "_type": "request_group",
+      "parentId": "wrk_api_django_reference",
+      "name": "Observability (integrações Rust)",
+      "description": "Endpoints e demonstrações das integrações em Rust (monitor, rate-limit, audit, cache, scheduler).",
+      "metaSortKey": -100
+    },
+    {
+      "_id": "req_metrics",
+      "_type": "request",
+      "parentId": "fld_observability",
+      "name": "Metrics (rust-py-monitor)",
+      "method": "GET",
+      "url": "{{ _.host }}/metrics/",
+      "description": "Exposição Prometheus de latências (p50/p95/p99), total de requests/erros e CPU/memória do processo. Coletado pelo MonitorMiddleware. Público.",
+      "body": {},
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -100
+    },
+    {
+      "_id": "req_ratelimit_demo",
+      "_type": "request",
+      "parentId": "fld_observability",
+      "name": "Rate limit demo (rust-py-rate-limit)",
+      "method": "POST",
+      "url": "{{ _.base_url }}/login/",
+      "description": "Demonstra o rust-py-rate-limit: envie repetidamente (Ctrl+Enter) com senha errada. Após o limite do bucket 'login' (padrão 10/min por IP) a API responde 429 com header Retry-After, em vez de 401.",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"{{ _.email }}\",\n  \"password\": \"wrong-password\"\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -90
     }
   ]
 }
