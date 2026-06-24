@@ -1,0 +1,209 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-06-24T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v8",
+  "resources": [
+    {
+      "_id": "wrk_api_django_reference",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "api_django_reference",
+      "description": "API Django + DRF + JWT — app apps/users",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "parentId": "wrk_api_django_reference",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8000/api/v1/users",
+        "email": "john@example.com",
+        "password": "Str0ng-Pass!23",
+        "access_token": "",
+        "refresh_token": "",
+        "uid": "",
+        "token": ""
+      },
+      "dataPropertyOrder": {
+        "&": ["base_url", "email", "password", "access_token", "refresh_token", "uid", "token"]
+      },
+      "metaSortKey": 1
+    },
+    {
+      "_id": "fld_auth",
+      "_type": "request_group",
+      "parentId": "wrk_api_django_reference",
+      "name": "Users",
+      "description": "Endpoints de autenticação e conta",
+      "metaSortKey": -1000
+    },
+    {
+      "_id": "req_register",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Register",
+      "method": "POST",
+      "url": "{{ _.base_url }}/register/",
+      "description": "Cria conta e dispara email de confirmação. Público.",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"{{ _.email }}\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"password\": \"{{ _.password }}\",\n  \"password_confirm\": \"{{ _.password }}\"\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -1000
+    },
+    {
+      "_id": "req_login",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Login",
+      "method": "POST",
+      "url": "{{ _.base_url }}/login/",
+      "description": "Autentica por email/senha. Retorna access, refresh e user. Público.",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"{{ _.email }}\",\n  \"password\": \"{{ _.password }}\"\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -900
+    },
+    {
+      "_id": "req_login_refresh",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Login Refresh",
+      "method": "POST",
+      "url": "{{ _.base_url }}/login/refresh/",
+      "description": "Renova o access token a partir do refresh token. Público.",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"refresh\": \"{{ _.refresh_token }}\"\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -800
+    },
+    {
+      "_id": "req_me",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Me",
+      "method": "GET",
+      "url": "{{ _.base_url }}/me/",
+      "description": "Dados do usuário autenticado. Requer JWT.",
+      "body": {},
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.access_token }}"
+      },
+      "metaSortKey": -700
+    },
+    {
+      "_id": "req_me_update",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Me (update)",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/me/",
+      "description": "Atualiza dados do usuário autenticado. Requer JWT.",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"first_name\": \"John\",\n  \"last_name\": \"Updated\"\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.access_token }}"
+      },
+      "metaSortKey": -600
+    },
+    {
+      "_id": "req_change_password",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Change Password",
+      "method": "POST",
+      "url": "{{ _.base_url }}/change-password/",
+      "description": "Troca a senha (exige a senha atual). Requer JWT.",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"old_password\": \"{{ _.password }}\",\n  \"new_password\": \"Nova-Senha!99\",\n  \"new_password_confirm\": \"Nova-Senha!99\"\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.access_token }}"
+      },
+      "metaSortKey": -500
+    },
+    {
+      "_id": "req_forgot_password",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Forgot Password",
+      "method": "POST",
+      "url": "{{ _.base_url }}/forgot-password/",
+      "description": "Envia link de reset por email (resposta sempre genérica). Público.",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"{{ _.email }}\"\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -400
+    },
+    {
+      "_id": "req_reset_password",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Reset Password",
+      "method": "POST",
+      "url": "{{ _.base_url }}/reset-password/",
+      "description": "Conclui o reset usando uid + token (vêm no link do email). Público.",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"uid\": \"{{ _.uid }}\",\n  \"token\": \"{{ _.token }}\",\n  \"new_password\": \"Nova!2024\",\n  \"new_password_confirm\": \"Nova!2024\"\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -300
+    },
+    {
+      "_id": "req_confirm_email",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Confirm Email",
+      "method": "POST",
+      "url": "{{ _.base_url }}/confirm-email/",
+      "description": "Confirma o email usando uid + token (vêm no link do email). Público.",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"uid\": \"{{ _.uid }}\",\n  \"token\": \"{{ _.token }}\"\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -200
+    }
+  ]
+}

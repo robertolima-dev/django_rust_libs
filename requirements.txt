@@ -1,0 +1,13 @@
+Django>=5.1,<5.2
+djangorestframework>=3.15
+djangorestframework-simplejwt>=5.3
+psycopg[binary]>=3.2
+python-decouple>=3.8
+django-cors-headers>=4.4
+
+# Rust-backed integrations
+rust-py-audit[django]>=0.3
+rust-py-rate-limit>=0.1.5
+rust-py-monitor[django]>=0.2
+rust-py-scheduler[django]>=0.1.5
+rust-py-cache>=0.1.2
